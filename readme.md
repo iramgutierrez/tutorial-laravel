@@ -343,6 +343,49 @@ Migrated: 2016_02_18_203714_create_teams_table
 Migrated: 2016_02_18_204225_create_members_table
 ```
 
+Las clases de Modelo requieren una propiedad llamada fillable, que es un array que contiene los campos que se van a poder asignar una valor desde la aplicación (setter)
+
+
+app/Entities/Team.php
+
+```
+protected $fillable = [
+    'name',
+];
+```
+
+app/Entities/Member.php
+
+
+```
+protected $fillable = [
+    'name', 'email' , 'team_id' , 'image'
+];
+```
+
+## Relaciones
+
+Las relaciones se definen dentro de la clase de modelo de manera sencilla
+
+app/Entities/Team.php
+
+```
+public function members()
+{
+    return $this->hasMany(Member::class);
+}
+```
+
+app/Entities/Member.php
+
+```
+public function team()
+{
+    return $this->belongsTo(Team::class);
+}
+```
+
+
 
 
 
