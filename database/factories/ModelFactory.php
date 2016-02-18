@@ -20,9 +20,9 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Entities\Member::class, function (Faker\Generator $faker) {
+$factory->define(App\Gigigo\Entities\MemberEntity::class, function (Faker\Generator $faker) {
 
-    $team = App\Entities\Team::all()->random(1);
+    $team = App\Gigigo\Entities\TeamEntity::all()->random(1);
 
     return [
         'name' => $faker->name,

@@ -21,7 +21,7 @@ class TeamsTableSeeder extends Seeder
 
         foreach($teams as $team)
         {
-            App\Entities\Team::create([
+            App\Gigigo\Entities\TeamEntity::create([
                 'name' => $team
             ]);
         }

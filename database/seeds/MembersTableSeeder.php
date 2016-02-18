@@ -11,6 +11,6 @@ class MembersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Entities\Member::class, 20)->create();
+        factory(App\Gigigo\Entities\MemberEntity::class, 20)->create();
     }
 }

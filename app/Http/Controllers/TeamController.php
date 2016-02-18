@@ -7,18 +7,29 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Entities\Team as Entity;
+use App\Gigigo\Repositories\TeamRepository as Repository;
+use App\Gigigo\Managers\TeamManager as Manager;
+use App\Gigigo\Entities\TeamEntity as Entity;
+use Illuminate\Support\MessageBag;
 
 class TeamController extends Controller
 {
     /**
-     * @var Entity
+     * @var Repository
      */
-    protected $entity;
-
-    public function __construct(Entity $Entity)
+    protected $repository;
+    /**
+     * @var Manager
+     */
+    protected $manager;
+    /**
+     * @param Repository $Repository
+     * @param Manager $Manager
+     */
+    public function __construct(Repository $Repository, Manager $Manager)
     {
-        $this->entity = $Entity;
+        $this->repository = $Repository;
+        $this->manager = $Manager;
     }
 
     /**
@@ -28,20 +39,9 @@ class TeamController extends Controller
      */
     public function index()
     {
-        $resources = $this->entity->all();
-        //$resources = $this->entity->with('members')->get();
-
+        $resources = $this->repository->all();
         return response()->json($resources);
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -52,7 +52,21 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $response = $this->manager->save($data);
+        if ($response instanceof Entity) {
+
+            return response()->json($response, 200);
+
+        } else if ($response instanceof MessageBag) {
+
+            return response()->json($response, 400);
+
+        }
+
+        return response()->json(['error' => 'Server error. Try Again'], 500);
+
     }
 
     /**
@@ -63,18 +77,13 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $resource = $this->repository->findById($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if (!$resource) {
+            return response()->json(['error' => 'Entity not found'], 404);
+        }
+
+        return response()->json($resource);
     }
 
     /**
@@ -86,7 +95,29 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $resource = $this->repository->findById($id);
+
+        if (!$resource) {
+            return response()->json(['error' => 'Entity not found'], 404);
+        }
+
+        $data = $request->all();
+
+        $this->manager->setEntity($resource);
+
+        $response = $this->manager->update($data);
+
+        if ($response instanceof Entity) {
+
+            return response()->json($response, 200);
+
+        } else if ($response instanceof MessageBag) {
+
+            return response()->json($response, 400);
+
+        }
+
+        return response()->json(['error' => 'Server error. Try Again'], 500);
     }
 
     /**
@@ -97,6 +128,23 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $resource = $this->repository->findById($id);
+
+        if(!$resource)
+        {
+            return response()->json(['error' => 'Entity not found'] , 404);
+        }
+
+        $this->manager->setEntity($resource);
+
+        $response = $this->manager->delete();
+
+        if($response){
+
+            return response()->json(['success' => 'Entity deleted'], 200);
+
+        }
+
+        return response()->json(['error' => 'Server error. Try Again' ],500);
     }
 }
