@@ -197,7 +197,7 @@ class TeamController extends Controller
 
 ## Entidades y migraciones
 
-Se pueden crear entidades junto con sumigración desde consola
+Se pueden crear entidades junto con su migración desde consola
 
 ```
 php artisan make:model Entities/Team -m
@@ -539,6 +539,43 @@ public function getFullImageAttribute()
 
     return asset('members/'.$this->image);
 }
+``` 
+
+## Inyección de dependencias
+
+Gracias al Service Container de Laravel, podemos implementar inyección de dependencias de manera sencilla
+
+Inyectaremos la entidad Team dentro de su controlador y la asociaremos a una propiedad del controlador.
+
+app/Http/Controllers/TeamController.php
+
+```
+use App\Entities\Team as Entity;
+
+class TeamController extends Controller
+{
+    /**
+     * @var Entity
+     */
+    protected $entity;
+
+    public function __construct(Entity $Entity)
+    {
+        $this->entity = $Entity;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $resources = $this->entity->all();
+        //$resources = $this->entity->with('members')->get();
+
+        return response()->json($resources);
+    }
 ``` 
 
 

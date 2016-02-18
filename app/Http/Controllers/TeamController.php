@@ -7,8 +7,20 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\Entities\Team as Entity;
+
 class TeamController extends Controller
 {
+    /**
+     * @var Entity
+     */
+    protected $entity;
+
+    public function __construct(Entity $Entity)
+    {
+        $this->entity = $Entity;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +28,10 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
+        $resources = $this->entity->all();
+        //$resources = $this->entity->with('members')->get();
+
+        return response()->json($resources);
     }
 
     /**
