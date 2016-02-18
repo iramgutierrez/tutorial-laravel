@@ -515,7 +515,32 @@ Ahora, podemos ejecutar ese seeder cada vez que querramos generar registros de p
 php artisan db:seed --class=MembersTableSeeder
 php artisan db:seed --class=MembersTableSeeder
 php artisan db:seed --class=MembersTableSeeder
-```
+``` 
+
+## Campos virtuales
+
+Se pueden agregar campos dinamicanete al modelo que no existen en la base de datos.
+
+Solo se definen los campos a agregar dentro del arreglo $appends de la clase de modelo y se implementa la función que va a devolver el valor de ese campo.
+
+Crearemos un campo llamado full_image que contendra la url completa de la imagen de un miembro de un equipo.
+
+app/Entities/Member.php
+
+``` 
+protected $appends = ['full_image'];
+
+public function getFullImageAttribute()
+{
+    if(empty($this->image))
+    {
+        return '';
+    }
+
+    return asset('members/'.$this->image);
+}
+``` 
+
 
 
 

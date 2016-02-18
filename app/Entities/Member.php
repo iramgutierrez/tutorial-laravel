@@ -24,10 +24,20 @@ class Member extends Model
         'created_at', 'updated_at',
     ];
 
-    protected $appends = [];
+    protected $appends = ['full_image'];
 
     public function team()
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function getFullImageAttribute()
+    {
+        if(empty($this->image))
+        {
+            return '';
+        }
+
+        return asset('members/'.$this->image);
     }
 }
