@@ -19,6 +19,15 @@ php artisan serve
 Laravel development server started on http://localhost:8000/
 ```
 
+El archivo .env sirve para configuraciones de la aplicación como conexión a base de datos
+
+```
+DB_HOST=127.0.0.1
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+```
+
 ## Rutas
 
 Las rutas se definen desde app/Http/routes.php
@@ -185,6 +194,164 @@ class TeamController extends Controller
     }
 }
 ```
+
+## Entidades y migraciones
+
+Se pueden crear entidades junto con sumigración desde consola
+
+```
+php artisan make:model Entities/Team -m
+php artisan make:model Entities/Member -m
+```
+
+Respuesta
+
+```
+Model created successfully.
+Created Migration: 2016_02_18_203714_create_teams_table
+Model created successfully.
+Created Migration: 2016_02_18_204225_create_members_table
+```
+
+app/Entities/Team.php
+
+```
+namespace App\Entities;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Team extends Model
+{
+    //
+}
+```
+
+app/Entities/Member.php
+
+```
+namespace App\Entities;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Member extends Model
+{
+    //
+}
+```
+
+database/migrations/2016_02_18_203714_create_teams_table.php
+
+```
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateTeamsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('teams', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('teams');
+    }
+}
+```
+
+database/migrations/2016_02_18_204225_create_members_table.php
+
+```
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateMembersTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('teams', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('members');
+    }
+}
+```
+
+Laravel proporciona la Clase Blueprint para generar los campos dentro de las migraciones dentro del metodo run [https://laravel.com/docs/5.2/migrations](https://laravel.com/docs/5.2/migrations)
+
+database/migrations/2016_02_18_203714_create_teams_table.php
+
+```
+$table->string('name' , 255)->nullable();
+```
+
+database/migrations/2016_02_18_204225_create_members_table.php
+
+```
+$table->string('name', 255)->nullable(false);
+$table->string('email', 255)->nullable(false);
+$table->string('image', 255)->nullable();
+$table->integer('team_id')->unsigned()->nullable();
+$table->foreign('team_id')
+    ->references('id')
+    ->on('teams')
+    ->onUpdate('cascade')
+    ->onDelete('set null');
+```
+
+Las migraciones se ejecutan desde consola
+
+```
+php artisan migrate
+```
+
+Respuesta
+
+```
+Migration table created successfully.
+Migrated: 2014_10_12_000000_create_users_table
+Migrated: 2014_10_12_100000_create_password_resets_table
+Migrated: 2016_02_18_203714_create_teams_table
+Migrated: 2016_02_18_204225_create_members_table
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
