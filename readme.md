@@ -4,18 +4,18 @@
 
 Comenzamos generando un nuevo proyecto
 
-```bash
+```
 laravel new tutorial-laravel
 ```
 
 Una vez se genere la copia de Laravel, se puede iniciar el servidor de desarrollo
 
-```bash
+```
 cd tutorial-laravel
 php artisan serve
 ```
 
-```bash
+```
 Laravel development server started on http://localhost:8000/
 ```
 
@@ -25,20 +25,50 @@ Las rutas se definen desde app/Http/routes.php
 
 Una ruta se puede definir de varias maneras
 
-```bash
+```
 Route::get('/', function () {
     return view('welcome');
 });
 ```
 
-```bash
+```
 Route::get('/', function () {
     return "<h1>Welcome</h1>"
 });
 ```
 
-```bash
+```
 Route::get('/', "HomeController@index");
 ```
+
+## Controladores
+
+Los controladores se encuentran por default en: app/Http/Controllers
+
+Se puede generar desde consola:
+
+```
+php artisan make:controller HomeController
+```
+
+app/Http/Controllers/HomeController.php
+
+```
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class HomeController extends Controller
+{
+    //
+}
+```
+
+
+
+
 
 
