@@ -67,6 +67,129 @@ class HomeController extends Controller
 }
 ```
 
+También se pueden generar rutas y controladores preparados para un CRUD
+
+app/Http/routes.php
+
+```
+Route::resource('teams' , 'TeamController');
+```
+
+Esto genera las siguientes rutas:
+
+```
++--------+-----------+--------------------+---------------+---------------------------------------------+------------+
+| Domain | Method    | URI                | Name          | Action                                      | Middleware |
++--------+-----------+--------------------+---------------+---------------------------------------------+------------+
+|        | GET|HEAD  | teams              | teams.index   | App\Http\Controllers\TeamController@index   |            |
+|        | POST      | teams              | teams.store   | App\Http\Controllers\TeamController@store   |            |
+|        | GET|HEAD  | teams/create       | teams.create  | App\Http\Controllers\TeamController@create  |            |
+|        | DELETE    | teams/{teams}      | teams.destroy | App\Http\Controllers\TeamController@destroy |            |
+|        | PUT|PATCH | teams/{teams}      | teams.update  | App\Http\Controllers\TeamController@update  |            |
+|        | GET|HEAD  | teams/{teams}      | teams.show    | App\Http\Controllers\TeamController@show    |            |
+|        | GET|HEAD  | teams/{teams}/edit | teams.edit    | App\Http\Controllers\TeamController@edit    |            |
++--------+-----------+--------------------+---------------+---------------------------------------------+------------+
+```
+Desde consola se puede generar el controlador con los metodos necesarios
+
+```
+php artisan make:controller TeamController --resource
+```
+
+app/Http/Controllers/TeamController.php
+
+```
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+
+class TeamController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}
+```
+
+
+
+
+
 
 
 
