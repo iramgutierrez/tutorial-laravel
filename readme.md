@@ -582,7 +582,7 @@ class TeamController extends Controller
 
 Gracias a la inyección de dependencias y a la flexibilidad y desacoplamiento que ofrece Laravel, es muy sencillo implementar un patrón de diseño como la arquitectura en capas, de la siguiente forma:
 
-![Arquitectura de capas](layers.png)
+![Arquitectura de capas](https://raw.githubusercontent.com/iramgutierrez/tutorial-laravel/master/layers.png)
 
 En este ejemplo, crearemos un CRUD de la entidad TEAM a manera de API RESTful.
 
