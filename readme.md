@@ -385,6 +385,146 @@ public function team()
 }
 ```
 
+## Seeders
+
+Los seeders se utilizan para poblar las tablas con datos de prueba. Se pueden generar desde consola
+
+```
+php artisan make:seeder TeamsTableSeeder
+```
+
+Respuesta
+
+```
+Seeder created successfully.
+```
+
+```
+php artisan make:seeder MembersTableSeeder
+```
+
+Respuesta
+
+```
+Seeder created successfully.
+```
+
+database/seeds/TeamsTableSeeder.php
+
+```
+use Illuminate\Database\Seeder;
+
+class TeamsTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+    }
+}
+```
+
+database/seeds/MembersTableSeeder.php
+
+```
+use Illuminate\Database\Seeder;
+
+class MembersTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+    }
+}
+```
+
+Agregamos 5 equipos desde el metodo run del TeamsTableSeeder
+
+```
+public function run()
+{
+    $teams = [
+        'Web',
+        'IOS',
+        'Android',
+        'QA',
+        'Windows Phone'
+    ];
+
+    foreach($teams as $team)
+    {
+        App\Entities\Team::create([
+            'name' => $team
+        ]);
+    }
+}
+```
+
+Ejecutamos el seeder desde consola
+
+```
+php artisan db:seed --class=TeamsTableSeeder
+```
+
+### Model Factory
+
+Los Model Factory se utilizan para generar registros Faker desde los seeders
+
+Implementamos un Model Factory para la entidad de Member
+
+database/factories/ModelFactory.php
+
+
+```
+$factory->define(App\Entities\Member::class, function (Faker\Generator $faker) {
+
+    $team = App\Entities\Team::all()->random(1);
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->safeEmail,
+        'team_id' => $team->id,
+        'image' => str_random(12).'.jpg'
+    ];
+});
+```
+
+Lo integramos en el seeder
+
+database/seeds/MembersTableSeeder.php
+
+```
+public function run()
+{
+    factory(App\Entities\Member::class, 20)->create();
+}
+```
+
+Ahora, podemos ejecutar ese seeder cada vez que querramos generar registros de prueba
+
+```
+php artisan db:seed --class=MembersTableSeeder
+php artisan db:seed --class=MembersTableSeeder
+php artisan db:seed --class=MembersTableSeeder
+```
+
+
+
+
+
+
+
+
+
 
 
 

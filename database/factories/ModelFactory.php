@@ -19,3 +19,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Entities\Member::class, function (Faker\Generator $faker) {
+
+    $team = App\Entities\Team::all()->random(1);
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->safeEmail,
+        'team_id' => $team->id,
+        'image' => str_random(12).'.jpg'
+    ];
+});
